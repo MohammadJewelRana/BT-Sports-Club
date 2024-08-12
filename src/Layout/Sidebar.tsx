@@ -44,20 +44,7 @@ const Sidebar = () => {
       key: "1",
       label: <NavLink to="/">Dashboard </NavLink>,
     },
-    {
-      key: "2",
-      label: "Manage Products",
-      children: [
-        {
-          key: "21",
-          label: <NavLink to="/manage-products/add-products">Add </NavLink>,
-        },
-        {
-          key: "22",
-          label: <NavLink to="/manage-products/view">View </NavLink>,
-        },
-      ],
-    },
+   
     {
       key: "3",
       label: <NavLink to="/member">Members </NavLink>,
@@ -74,6 +61,46 @@ const Sidebar = () => {
       key: "6",
       label: <NavLink to="/campaign">Campaign </NavLink>,
     },
+    {
+      key: "685",
+      label: <NavLink to="/notice">Notice </NavLink>,
+    },
+  ];
+
+
+  const adminItems: MenuProps["items"] = [
+   
+    {
+      key: "2",
+      label: "Manage ",
+      children: [
+        {
+          key: "21",
+          label: <NavLink to="/add-user">Add User </NavLink>,
+        },
+        {
+          key: "28",
+          label: <NavLink to="/fund-collect">   Fund Raise </NavLink>,
+        },
+        {
+          key: "22",
+          label: <NavLink to="/add-notice">Notice </NavLink>,
+        },
+      ],
+    },
+
+    // {
+    //   key: "36",
+    //   label: <NavLink to="/member">Notice </NavLink>,
+    // },
+  
+    // {
+    //   key: "36",
+    //   label: <NavLink to="/add-user"> </NavLink>,
+    // },
+  
+  
+ 
   ];
 
   return (
@@ -105,6 +132,7 @@ const Sidebar = () => {
         </h1>
       </div>
 
+
       <Menu
         theme="dark"
         mode="inline"
@@ -112,6 +140,21 @@ const Sidebar = () => {
         items={items} //side nav menu
         className="mt-8"
       ></Menu>
+
+
+     {
+      user && 
+      <>
+        <Menu
+        theme="dark"
+        mode="inline"
+        defaultSelectedKeys={["1"]}
+        items={adminItems} //side nav menu
+        className="mt-8"
+      ></Menu>
+      </>
+     }
+
       <div className="text-white mt-12 border-t-2 ">
         <div className="p-4 mt-4">
           {user ? (

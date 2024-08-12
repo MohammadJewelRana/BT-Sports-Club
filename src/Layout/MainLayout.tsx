@@ -15,7 +15,7 @@ const MainLayout = () => {
       <Footer></Footer> */}
 
 
-      <Layout className="h-screen">
+      <Layout className=" ">
         <Sidebar></Sidebar>
 
         <Layout>
