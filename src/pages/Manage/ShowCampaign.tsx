@@ -26,7 +26,7 @@ interface TableRow {
 
 const ShowCampaign = () => {
   const [campaigns, setCampaigns] = useState<TableRow[]>([]);
-  const [activeTab, setActiveTab] = useState<'all' | 'ongoing'>('ongoing');
+  const [activeTab, setActiveTab] = useState<"all" | "ongoing">("ongoing");
   const [campaignAll, allCampaignLoading, campaignRefetch] = useCampaign();
   const user = useAuth();
 
@@ -122,13 +122,15 @@ const ShowCampaign = () => {
     );
   };
 
-  const filteredCampaigns = activeTab === 'ongoing'
-    ? campaigns.filter(campaign => campaign.status === 'ongoing')
-    : campaigns;
+  const filteredCampaigns =
+    activeTab === "ongoing"
+      ? campaigns.filter((campaign) => campaign.status === "ongoing")
+      : campaigns;
 
-    const onGoingData=campaigns.filter(campaign => campaign.status === 'ongoing');
-    // console.log(onGoingData);
-    
+  const onGoingData = campaigns.filter(
+    (campaign) => campaign.status === "ongoing"
+  );
+  // console.log(onGoingData);
 
   return (
     <div>
@@ -141,21 +143,25 @@ const ShowCampaign = () => {
 
       <div className="mb-4">
         <button
-          onClick={() => setActiveTab('ongoing')}
-          className={`mr-2 p-2 rounded ${activeTab === 'ongoing' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          onClick={() => setActiveTab("ongoing")}
+          className={`mr-2 p-2 rounded ${
+            activeTab === "ongoing" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
         >
           Ongoing Campaigns
         </button>
         <button
-          onClick={() => setActiveTab('all')}
-          className={`p-2 rounded ${activeTab === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          onClick={() => setActiveTab("all")}
+          className={`p-2 rounded ${
+            activeTab === "all" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
         >
           All Campaigns
         </button>
       </div>
 
-      {activeTab === 'ongoing' ? (
-        <OnGoingCampaign onGoingData={onGoingData}  />
+      {activeTab === "ongoing" ? (
+        <OnGoingCampaign onGoingData={onGoingData} />
       ) : (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white shadow-md rounded-lg">
@@ -165,9 +171,10 @@ const ShowCampaign = () => {
                 <th className="py-2 px-4">End Date</th>
                 <th className="py-2 px-4">Purpose</th>
                 <th className="py-2 px-4">Grand Total</th>
+          
                 {user && (
                   <>
-                    <th className="py-2 px-4">Status</th>
+                       <th className="py-2 px-4">Status</th>
                     <th className="py-2 px-4">Action</th>
                   </>
                 )}
@@ -183,10 +190,12 @@ const ShowCampaign = () => {
                     <td className="py-2 px-4">{formatDate(row.startDate)}</td>
                     <td className="py-2 px-4">{formatDate(row.endDate)}</td>
                     <td className="py-2 px-4">{row.purpose}</td>
-                    <td className="py-2 px-4">${row.grandTotal.toFixed(2)}</td>
+                    <td className="py-2 px-4">${row.grandTotal.toFixed(2)}</td> 
+                    
+
                     {user && (
                       <>
-                        <td className="py-2 px-4">{row.status}</td>
+                         <td className="py-2 px-4">{row.status}</td>
                         <td className="py-2 px-4">
                           {renderActionIcons(row.status, index)}
                         </td>
@@ -205,7 +214,6 @@ const ShowCampaign = () => {
           </table>
         </div>
       )}
-  
 
       {/* <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg">
@@ -254,8 +262,6 @@ const ShowCampaign = () => {
           </tbody>
         </table>
       </div> */}
-
-
     </div>
   );
 };

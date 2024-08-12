@@ -8,6 +8,7 @@ import useAuth from "../../utils/getUser";
 import NoData from "../Shared/NoData";
 import AddNotice from "./AddNotice";
 import HeadingWithSubheading from "../../Layout/HeadingWithSubheading";
+import Swal from "sweetalert2";
 
 interface Notice {
   date: string;
@@ -50,9 +51,117 @@ const ShowNotice = () => {
     ); // Handle empty state
   }
 
+  console.log(notices);
+
+  const handleDeleteNotice = (id) => {
+    console.log(id);
+    // http://localhost:5000/api/notice/66b8c4087862325876f6a247
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(
+            `http://localhost:5000/api/notice/${id}`,
+            {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+          }
+
+          const result = await response.json();
+          console.log("Deleted successfully:", result);
+          Swal.fire({
+            title: "Deleted!",
+            text: "Notice has been deleted.",
+            icon: "success",
+          });
+
+          // Optionally refetch the user list or update the state to remove the deleted user
+          noticeRefetch();
+        } catch (error) {
+          console.error("Error deleting user:", error);
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to delete the user. Please try again.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      }
+    });
+  };
+  const handleUpdate = async (status, id) => {
+    console.log(status, id);
+
+    // Show confirmation alert
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, update it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // Make PATCH request to update notice status
+          const response = await fetch(
+            `http://localhost:5000/api/notice/${id}`,
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ status }), // Send the status in the request body
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+          }
+
+          const result = await response.json();
+          console.log("Updated successfully:", result);
+
+          // Show success alert
+          Swal.fire({
+            title: "Updated!",
+            text: "Notice has been updated.",
+            icon: "success",
+          });
+
+          // Optionally refetch or update the state to reflect the change
+          noticeRefetch();
+        } catch (error) {
+          console.error("Error updating notice:", error);
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to update the notice. Please try again.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      }
+    });
+  };
+
   return (
     <div>
-      <AddNotice refetch={noticeRefetch}></AddNotice>
+      {user && <AddNotice refetch={noticeRefetch}></AddNotice>}
 
       <HeadingWithSubheading
         heading={"  all Notice"}
@@ -85,13 +194,33 @@ const ShowNotice = () => {
                   <>
                     <td className="py-2 px-4">{notice.status}</td>
                     <td className="py-2 px-4 flex justify-center space-x-2">
-                      <button>
-                        <FontAwesomeIcon icon={faCheckCircle} />
-                      </button>
+                      {notice.status === "pending" ? (
+                        <>
+                          <button
+                            onClick={() =>
+                              handleUpdate("approved", notice?._id)
+                            }
+                          >
+                            <FontAwesomeIcon icon={faCheckCircle} />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => handleUpdate("pending", notice?._id)}
+                          >
+                            <FontAwesomeIcon
+                              icon={faCheckCircle}
+                              className="text-green-600" // Tailwind custom color class
+                            />
+                          </button>
+                        </>
+                      )}
 
                       <button
                         className="text-red-500 hover:text-red-700"
                         title="Delete"
+                        onClick={() => handleDeleteNotice(notice._id)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </button>
@@ -103,6 +232,8 @@ const ShowNotice = () => {
           </tbody>
         </table>
       </div>
+
+      <div></div>
     </div>
   );
 };
