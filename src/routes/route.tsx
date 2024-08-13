@@ -11,6 +11,7 @@ import Notice from "../pages/Notice/Notice";
 import ShowNotice from "../pages/Manage/ShowNotice";
  
 import ShowCampaign from "../pages/Manage/ShowCampaign";
+import ShowExpense from "../pages/Manage/ShowExpense";
 
 const router = createBrowserRouter([
   {
@@ -28,11 +29,15 @@ const router = createBrowserRouter([
       },
       {
         path: "/member",
-        element: <Member></Member>,
+        element: <Member state={null}></Member>,
       },
       {
         path: "/campaign",
         element: <Campaign></Campaign>,
+      },
+      {
+        path: "/expense",
+        element: <ShowExpense></ShowExpense>,
       },
 
       {

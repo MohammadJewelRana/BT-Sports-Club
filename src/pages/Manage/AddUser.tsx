@@ -17,6 +17,7 @@ const img_hosting_token = import.meta.env.VITE_Image_Upload_Token;
 
 const AddUser = () => {
   const [showForm, setShowForm] = useState(false); // State to toggle form visibility
+  const [state,setState]=useState(false)
   const {
     control,
     handleSubmit,
@@ -73,6 +74,7 @@ const AddUser = () => {
                     timer: 1500,
                   });
                   reset();
+                  setState(true)
                 }
               })
               .catch((error) => {
@@ -223,7 +225,7 @@ const AddUser = () => {
       )}
 
       <div className="mt-24">
-        <Member></Member>
+        <Member state={state}></Member>
       </div>
     </div>
   );

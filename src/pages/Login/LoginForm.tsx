@@ -18,33 +18,73 @@ const LoginForm = () => {
 
   const navigate = useNavigate();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log(data);
     // Handle form submission logic
-    const loginStatus = true;
 
-    if (loginStatus) {
-      setUser(data);
-      localStorage.setItem("userData", JSON.stringify(data));
-
-      // Optionally, you can redirect the user or show a success message
-      console.log("User data saved in localStorage");
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Successfully Logged In",
-        showConfirmButton: false,
-        timer: 1500,
+    // const loginStatus = true;
+    try {
+      const response = await fetch("http://localhost:5000/api/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
-      navigate("/");
-    } else {
+
+      if (response.ok) {
+        // Handle success
+        const result = await response.json();
+        console.log("Login successful:", result);
+        setUser(data);
+        localStorage.setItem("userData", JSON.stringify(data));
+        Swal.fire({
+          title: "Success!",
+          text: "You have logged in successfully!",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+        navigate("/");
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text:   "Failed to log in. Please try again.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
       Swal.fire({
-        title: " Login Error!",
-        text: " User Does Not Exist!!",
+        title: "Error!",
+        text: "Something went wrong. Please try again later.",
         icon: "error",
-        confirmButtonText: "Try Again",
+        confirmButtonText: "OK",
       });
     }
+
+    // if (loginStatus) {
+    //   setUser(data);
+    //   localStorage.setItem("userData", JSON.stringify(data));
+
+    //   // Optionally, you can redirect the user or show a success message
+    //   console.log("User data saved in localStorage");
+    //   Swal.fire({
+    //     position: "top-end",
+    //     icon: "success",
+    //     title: "Successfully Logged In",
+    //     showConfirmButton: false,
+    //     timer: 1500,
+    //   });
+    //   navigate("/");
+    // } else {
+    //   Swal.fire({
+    //     title: " Login Error!",
+    //     text: " User Does Not Exist!!",
+    //     icon: "error",
+    //     confirmButtonText: "Try Again",
+    //   });
+    // }
   };
 
   return (
@@ -55,34 +95,30 @@ const LoginForm = () => {
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-6">
+          <div className="mb-4">
             <label
-              className="block text-gray-700 font-medium mb-2"
-              htmlFor="email"
+              className="block text-gray-700 font-medium mb-2 capitalize"
+              htmlFor="username"
             >
-              Email
+              whatsapp number
             </label>
             <input
-              type="email"
-              id="email"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^\S+@\S+$/i,
-                  message: "Invalid email address",
-                },
-              })}
+              type="text"
+              id="username"
+              {...register("whatsapp", { required: "Username is required" })}
               className={`w-full px-4 py-2 border ${
-                errors.email ? "border-red-500" : "border-gray-300"
+                errors.password ? "border-red-500" : "border-gray-300"
               } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400`}
-              placeholder="Enter your email"
+              placeholder="Enter your whatsapp number"
             />
-            {errors.email && (
+            {errors.whatsapp && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.email.message as string}
+                {errors.whatsapp.message as string}
               </p>
             )}
           </div>
+
+          {/* 
           <div className="mb-4">
             <label
               className="block text-gray-700 font-medium mb-2"
@@ -104,7 +140,7 @@ const LoginForm = () => {
                 {errors.password.message as string}
               </p>
             )}
-          </div>
+          </div> */}
 
           <div className="flex items-center justify-between">
             <button

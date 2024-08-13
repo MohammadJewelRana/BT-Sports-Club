@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom";
 import { Layout } from "antd";
 import Sidebar from "./Sidebar";
 import { Content, Header } from "antd/es/layout/layout";
+import Footer from "../pages/Shared/Footer";
 
 const MainLayout = () => {
   return (
@@ -13,6 +14,7 @@ const MainLayout = () => {
       <Outlet></Outlet>
 
       <Footer></Footer> */}
+      
 
 
       <Layout className=" ">
@@ -25,9 +27,11 @@ const MainLayout = () => {
               <Outlet></Outlet>
             </div>
           </Content>
+          <Footer></Footer>
         </Layout>
+      
       </Layout>
-
+      {/* <Footer></Footer> */}
 
 
 

@@ -1,15 +1,18 @@
- /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Swal from "sweetalert2";
 import useUser from "../../hooks/useUser";
 import Heading from "../../Layout/Heading";
 import LoadingPage from "../Shared/LoadingPage";
 import useAuth from "../../utils/getUser";
 
-const Member = () => {
+const Member = ({ state }) => {
   const [userAll, allUserLoading, userRefetch] = useUser();
   const user = useAuth();
   console.log(userAll.data);
   const allUser = userAll?.data;
+  if (state === true) {
+    userRefetch();
+  }
 
   if (allUserLoading) {
     return <LoadingPage />;
@@ -69,7 +72,9 @@ const Member = () => {
       <div className="w-full mt-6">
         <div className="overflow-x-auto">
           <div className="w-full bg-white shadow-md rounded-lg">
-            <div className={`grid ${gridCols} bg-blue-400 p-4 font-semibold text-white text-center`}>
+            <div
+              className={`grid ${gridCols} bg-blue-400 p-4 font-semibold text-white text-center`}
+            >
               <div>Picture</div>
               <div>Name</div>
               <div>Profession</div>
@@ -92,7 +97,10 @@ const Member = () => {
                 <div>{contact.profession}</div>
                 <div>
                   <a
-                    href={`https://wa.me/${contact.whatsapp.replace(/\D/g, "")}`}
+                    href={`https://wa.me/${contact.whatsapp.replace(
+                      /\D/g,
+                      ""
+                    )}`}
                     className="text-green-500 hover:underline"
                   >
                     {contact.whatsapp}

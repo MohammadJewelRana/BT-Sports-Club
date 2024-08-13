@@ -1,5 +1,10 @@
 import { Link } from "react-router-dom";
 import Heading from "./Heading";
+import ImportantNotice from "../pages/Home/ImportantNotice";
+import ImageGallery from "../pages/Home/ImageGallery";
+import Campaign from "../pages/Campaign/Campaign";
+import Member from "../pages/Member/Member";
+import ApartmentPage from "../pages/Home/ApartmentPage";
 
 const Dashboard = () => {
   const totalProducts = 500;
@@ -8,7 +13,8 @@ const Dashboard = () => {
  
   return (
     <div className=" ">
-      <Heading heading={"dashboard"}></Heading>
+      {/* <Heading heading={"dashboard"}></Heading> */}
+      <ImportantNotice></ImportantNotice>
 
       <div className=" border w-full bg-gray-200 p-4 mt-8">
 
@@ -60,6 +66,11 @@ const Dashboard = () => {
       </div>
 
 
+ 
+<ImageGallery></ImageGallery>
+<Campaign></Campaign>
+<Member></Member>
+<ApartmentPage></ApartmentPage>
 
     </div>
   );
