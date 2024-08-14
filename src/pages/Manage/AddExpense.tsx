@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable use-isnan */
 import { useState } from "react";
 import { useForm } from "react-hook-form";

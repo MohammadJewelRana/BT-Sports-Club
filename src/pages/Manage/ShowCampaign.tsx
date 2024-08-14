@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -15,6 +17,7 @@ import LoadingPage from "../Shared/LoadingPage";
 import NoData from "../Shared/NoData";
 import useAuth from "../../utils/getUser";
 import OnGoingCampaign from "./OnGoingCampaign";
+import Swal from "sweetalert2";
 
 interface TableRow {
   startDate: string;
@@ -40,13 +43,13 @@ const ShowCampaign = () => {
     return <LoadingPage />; // Handle loading state
   }
 
-  if (!campaigns.length) {
-    return (
-      <div>
-        <NoData title={"No Campaign Available"} subTitle={"campaign"} />
-      </div>
-    ); // Handle empty state
-  }
+  // if (!campaigns.length) {
+  //   return (
+  //     <div>
+  //       <NoData title={"No Campaign Available"} subTitle={"campaign"} />
+  //     </div>
+  //   ); // Handle empty state
+  // }
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -55,71 +58,68 @@ const ShowCampaign = () => {
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
+ 
+ 
 
-  const handleStatusChange = (index: number, newStatus: string) => {
-    setCampaigns((prevCampaigns) => {
-      const newCampaigns = [...prevCampaigns];
-      newCampaigns[index].status = newStatus;
-      return newCampaigns;
+  const handleDelete = (id: string, status: string) => {
+    console.log(id, status);
+
+    const newStatus = { status };
+    console.log(newStatus);
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, update it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // Make PATCH request to update notice status
+          const response = await fetch(
+            `http://localhost:5000/api/campaign/${id}`,
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(newStatus), // Send the status in the request body
+            }
+          );
+
+          console.log(response);
+
+          if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+          }
+
+          const result = await response.json();
+          console.log("Updated successfully:", result);
+
+          // Show success alert
+          Swal.fire({
+            title: "Updated!",
+            text: "Campaign has been updated.",
+            icon: "success",
+          });
+
+          // Optionally refetch or update the state to reflect the change
+          // noticeRefetch();
+          campaignRefetch();
+        } catch (error) {
+          console.error("Error updating notice:", error);
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to update the campaign. Please try again.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      }
     });
-
-    // Optionally, update the status on the server
-    // fetch(`/api/campaigns/${campaigns[index].id}`, {
-    //   method: 'PUT',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ status: newStatus }),
-    // }).then(() => campaignRefetch());
-  };
-
-  const handleDelete = (index: number) => {
-    // Handle deletion
-    setCampaigns((prevCampaigns) => {
-      const newCampaigns = prevCampaigns.filter((_, i) => i !== index);
-      return newCampaigns;
-    });
-
-    // Optionally, delete on the server
-    // fetch(`/api/campaigns/${campaigns[index].id}`, {
-    //   method: 'DELETE',
-    // }).then(() => campaignRefetch());
-  };
-
-  const renderActionIcons = (status: string, index: number) => {
-    return (
-      <div className="flex justify-center space-x-2">
-        <button
-          className="text-blue-500 hover:text-blue-700"
-          onClick={() => handleStatusChange(index, "Pending")}
-          title="Set Pending"
-          style={{ display: status !== "Pending" ? "inline-flex" : "none" }}
-        >
-          <FontAwesomeIcon icon={faHourglassHalf} />
-        </button>
-        <button
-          className="text-blue-500 hover:text-blue-700"
-          onClick={() => handleStatusChange(index, "Ongoing")}
-          title="Set Ongoing"
-          style={{ display: status !== "Ongoing" ? "inline-flex" : "none" }}
-        >
-          <FontAwesomeIcon icon={faPlay} />
-        </button>
-        <button
-          className="text-green-500 hover:text-green-700"
-          onClick={() => handleStatusChange(index, "Ended")}
-          title="Set Ended"
-          style={{ display: status !== "Ended" ? "inline-flex" : "none" }}
-        >
-          <FontAwesomeIcon icon={faCheckCircle} />
-        </button>
-        <button
-          className="text-red-500 hover:text-red-700"
-          onClick={() => handleDelete(index)}
-          title="Delete"
-        >
-          <FontAwesomeIcon icon={faTrash} />
-        </button>
-      </div>
-    );
   };
 
   const filteredCampaigns =
@@ -161,7 +161,7 @@ const ShowCampaign = () => {
       </div>
 
       {activeTab === "ongoing" ? (
-        <OnGoingCampaign onGoingData={onGoingData} />
+        <OnGoingCampaign onGoingData={onGoingData} campaignRefetch={campaignRefetch} />
       ) : (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white shadow-md rounded-lg">
@@ -171,10 +171,10 @@ const ShowCampaign = () => {
                 <th className="py-2 px-4">End Date</th>
                 <th className="py-2 px-4">Purpose</th>
                 <th className="py-2 px-4">Grand Total</th>
-          
+
                 {user && (
                   <>
-                       <th className="py-2 px-4">Status</th>
+                    <th className="py-2 px-4">Status</th>
                     <th className="py-2 px-4">Action</th>
                   </>
                 )}
@@ -190,14 +190,105 @@ const ShowCampaign = () => {
                     <td className="py-2 px-4">{formatDate(row.startDate)}</td>
                     <td className="py-2 px-4">{formatDate(row.endDate)}</td>
                     <td className="py-2 px-4">{row.purpose}</td>
-                    <td className="py-2 px-4">${row.grandTotal.toFixed(2)}</td> 
-                    
+                    <td className="py-2 px-4">${row.grandTotal.toFixed(2)}</td>
 
                     {user && (
                       <>
-                         <td className="py-2 px-4">{row.status}</td>
-                        <td className="py-2 px-4">
-                          {renderActionIcons(row.status, index)}
+                        <td className="py-2 px-4">{row.status}</td>
+                        <td className="py-2 px-4 ">
+                          <div className="flex gap-4 items-center justify-center">
+                            {row?.status === "pending" ? (
+                              <>
+                                <button
+                                  onClick={() =>
+                                    handleDelete(row?._id, "ongoing")
+                                  }
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faPlay}
+                                    className="text-blue-600"
+                                    title="ongoing"
+                                  />
+                                </button>
+
+                                <button
+                                  onClick={() => handleDelete(row?._id, "end")}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faCheckCircle}
+                                    className="text-green-600"
+                                    title="end"
+                                  />
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                {row?.status === "end" ? (
+                                  <>
+                                    <button
+                                      onClick={() =>
+                                        handleDelete(row?._id, "pending")
+                                      }
+                                    >
+                                      <FontAwesomeIcon
+                                        icon={faHourglassHalf}
+                                        className="text-yellow-600"
+                                        title="pending"
+                                      />
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleDelete(row?._id, "ongoing")
+                                      }
+                                    >
+                                      <FontAwesomeIcon
+                                        icon={faPlay}
+                                        className="text-blue-600"
+                                        title="ongoing"
+                                      />
+                                    </button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <button
+                                      onClick={() =>
+                                        handleDelete(row?._id, "pending")
+                                      }
+                                    >
+                                      <FontAwesomeIcon
+                                        icon={faHourglassHalf}
+                                        className="text-yellow-600"
+                                        title="pending"
+                                      />
+                                    </button>
+
+                                    <button
+                                      onClick={() =>
+                                        handleDelete(row?._id, "end")
+                                      }
+                                    >
+                                      <FontAwesomeIcon
+                                        icon={faCheckCircle}
+                                        className="text-green-600"
+                                        title="end"
+                                      />
+                                    </button>
+                                  </>
+                                )}
+                              </>
+                            )}
+
+                            <button
+                              onClick={() => handleDelete(row?._id, "delete")}
+                            >
+                              {" "}
+                              <FontAwesomeIcon
+                                icon={faTrash}
+                                className="text-red-600"
+                                title="delete"
+                              />
+                            </button>
+                          </div>
                         </td>
                       </>
                     )}
@@ -215,53 +306,7 @@ const ShowCampaign = () => {
         </div>
       )}
 
-      {/* <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded-lg">
-          <thead>
-            <tr className="bg-gray-200 text-center">
-              <th className="py-2 px-4">Start Date</th>
-              <th className="py-2 px-4">End Date</th>
-              <th className="py-2 px-4">Purpose</th>
-              <th className="py-2 px-4">Grand Total</th>
-              {user && (
-                <>
-                  <th className="py-2 px-4">Status</th>
-                  <th className="py-2 px-4">Action</th>
-                </>
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {filteredCampaigns.length ? (
-              filteredCampaigns.map((row, index) => (
-                <tr
-                  key={index}
-                  className="text-center border-b hover:bg-gray-100 transition-colors"
-                >
-                  <td className="py-2 px-4">{formatDate(row.startDate)}</td>
-                  <td className="py-2 px-4">{formatDate(row.endDate)}</td>
-                  <td className="py-2 px-4">{row.purpose}</td>
-                  <td className="py-2 px-4">${row.grandTotal.toFixed(2)}</td>
-                  {user && (
-                    <>
-                      <td className="py-2 px-4">{row.status}</td>
-                      <td className="py-2 px-4">
-                        {renderActionIcons(row.status, index)}
-                      </td>
-                    </>
-                  )}
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={user ? 6 : 4} className="text-center py-4">
-                  No data available
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div> */}
+ 
     </div>
   );
 };
