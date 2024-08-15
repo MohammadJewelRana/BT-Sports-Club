@@ -20,15 +20,16 @@ const ApartmentPage = () => {
                 <ul className="space-y-4">
                   <li>
                     <p className="font-semibold">Address:</p>
-                    <p>123 Street Name, City, Country</p>
+                    <p> Bismillah Tower,<br />
+                       West Vashantek,<br /> Dhaka</p>
                   </li>
                   <li>
                     <p className="font-semibold">Phone:</p>
-                    <p>(123) 456-7890</p>
+                    <p>+880 01x xxx xxxxx</p>
                   </li>
                   <li>
                     <p className="font-semibold">Email:</p>
-                    <p>info@example.com</p>
+                    <p>bt.info@gmail.com</p>
                   </li>
                 </ul>
               </div>

@@ -44,13 +44,13 @@ const ShowNotice = () => {
     return <LoadingPage></LoadingPage>; // Handle loading state
   }
 
-  if (!notices.length) {
-    return (
-      <div>
-        <NoData title={"No Notices Available"} subTitle={"notice"}></NoData>
-      </div>
-    ); // Handle empty state
-  }
+  // if (!notices.length) {
+  //   return (
+  //     <div>
+  //       <NoData title={"No Notices Available"} subTitle={"notice"}></NoData>
+  //     </div>
+  //   ); // Handle empty state
+  // }
 
   console.log(notices);
 
