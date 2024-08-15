@@ -1,21 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
 
-const useCampaign= () => {
+const useCampaign = () => {
   const {
     data: campaignAll = [],
     isLoading: allCampaignLoading,
     refetch: campaignRefetch,
   } = useQuery({
-    queryKey: ["notice"],
+    queryKey: ["campaign"],
     // enabled: loading,
 
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/api/campaign");
+      const res = await fetch(
+        "https://bt-sports-backend.vercel.app/api/campaign"
+      );
       // console.log(res);
       return res.json();
     },
   });
-  
 
   return [campaignAll, allCampaignLoading, campaignRefetch];
 };

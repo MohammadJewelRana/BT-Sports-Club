@@ -32,24 +32,21 @@ const AddExpense = ({ refetch }: any) => {
     // Convert the date to ISO 8601 format
     const formattedDate = formatDateToISO(data.buyDate);
     // console.log(data);
-    data.buyDate=formattedDate;
+    data.buyDate = formattedDate;
     // console.log(data);
-    const { buyer,buyDate}=data;
- 
- const newData={
-    buyer,
-    numberOfBall: parseInt(data.numberOfBall, 10),
-    ballCost: isNaN(data.ballCost) ? 0 : data.ballCost,
-    numberOfTape: parseInt(data.numberOfTape, 10),
-    tapeCost: isNaN(data.tapeCost) ? 0 : data.tapeCost,
-    buyDate
-     
- }
- console.log(newData);
- 
-    
+    const { buyer, buyDate } = data;
 
-    fetch("http://localhost:5000/api/campaign/expense", {
+    const newData = {
+      buyer,
+      numberOfBall: parseInt(data.numberOfBall, 10),
+      ballCost: isNaN(data.ballCost) ? 0 : data.ballCost,
+      numberOfTape: parseInt(data.numberOfTape, 10),
+      tapeCost: isNaN(data.tapeCost) ? 0 : data.tapeCost,
+      buyDate,
+    };
+    console.log(newData);
+
+    fetch("https://bt-sports-backend.vercel.app/api/campaign/expense", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,13 +64,12 @@ const AddExpense = ({ refetch }: any) => {
             timer: 1500,
           });
           reset();
-          refetch()
-           
+          refetch();
         }
       })
       .catch((error) => {
         console.log(error);
-        
+
         Swal.fire({
           title: "Error!",
           text: "Failed to add expense. Please try again.",
@@ -81,11 +77,6 @@ const AddExpense = ({ refetch }: any) => {
           confirmButtonText: "Ok",
         });
       });
-
-
-
-
-
   };
 
   return (
@@ -127,11 +118,9 @@ const AddExpense = ({ refetch }: any) => {
                 </label>
                 <div className="flex space-x-4">
                   <select
-                    {...register("numberOfBall",
-                        {
-                            required: "Number of balls is required",
-                          }
-                )}
+                    {...register("numberOfBall", {
+                      required: "Number of balls is required",
+                    })}
                     className="w-1/2 p-2 border border-gray-300 rounded"
                   >
                     <option value="">Select number of balls</option>
@@ -141,13 +130,11 @@ const AddExpense = ({ refetch }: any) => {
                     <option value="3">3 Balls</option>
                     <option value="4">4 Balls</option>
                     <option value="5">5 Balls</option>
-                    
                   </select>
 
                   <input
                     type="number"
                     {...register("ballCost", {
-                    
                       valueAsNumber: true,
                     })}
                     placeholder="Enter ball cost"
@@ -171,8 +158,8 @@ const AddExpense = ({ refetch }: any) => {
                 <div className="flex space-x-4">
                   <select
                     {...register("numberOfTape", {
-                        required: "Number of tapes is required",
-                      } )}
+                      required: "Number of tapes is required",
+                    })}
                     className="w-1/2 p-2 border border-gray-300 rounded"
                   >
                     <option value="">Select number of tapes</option>
@@ -187,7 +174,6 @@ const AddExpense = ({ refetch }: any) => {
                   <input
                     type="number"
                     {...register("tapeCost", {
-                    
                       valueAsNumber: true,
                     })}
                     placeholder="Enter tape cost"

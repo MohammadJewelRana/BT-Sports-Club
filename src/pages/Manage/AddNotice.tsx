@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Heading from "../../Layout/Heading";
-import ShowNotice from "./ShowNotice";
-import HeadingWithSubheading from "../../Layout/HeadingWithSubheading";
+
 import Swal from "sweetalert2";
 
 interface FormData {
@@ -10,7 +10,7 @@ interface FormData {
   description: string;
 }
 
-const AddNotice = ({ refetch }) => {
+const AddNotice = ({ refetch }: any) => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const {
     register,
@@ -24,7 +24,7 @@ const AddNotice = ({ refetch }) => {
     // console.log(data);
     // Handle form submission
 
-    fetch("http://localhost:5000/api/notice/create-notice", {
+    fetch("https://bt-sports-backend.vercel.app/api/notice/create-notice", {
       method: "POST",
       headers: {
         "content-type": "application/json",

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useUser = () => {
   const {
-    data:  userAll = [],
+    data: userAll = [],
     isLoading: allUserLoading,
     refetch: userRefetch,
   } = useQuery({
@@ -10,7 +10,7 @@ const useUser = () => {
     // enabled: loading,
 
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/api/user");
+      const res = await fetch("https://bt-sports-backend.vercel.app/api/user");
       // console.log(res);
       return res.json();
     },

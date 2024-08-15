@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
  
 
-const HeadingWithSubheading = ({heading,subheading}) => {
+const HeadingWithSubheading = ({heading,subheading}:any) => {
   return (
     <div>
          <div className="text-center py-8">

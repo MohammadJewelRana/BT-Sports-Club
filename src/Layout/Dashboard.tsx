@@ -1,77 +1,131 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "react-router-dom";
-import Heading from "./Heading";
+
 import ImportantNotice from "../pages/Home/ImportantNotice";
 import ImageGallery from "../pages/Home/ImageGallery";
 import Campaign from "../pages/Campaign/Campaign";
 import Member from "../pages/Member/Member";
 import ApartmentPage from "../pages/Home/ApartmentPage";
 
+import { totalCalculation } from "../utils/moneyCalculation";
+
 const Dashboard = () => {
-  const totalProducts = 500;
-  const totalOrders = 200;
-  const totalUsers = 1000;
- 
+  const total = totalCalculation();
+  console.log(total);
+  const {
+    grandTotalExpense,
+    grandDepositAmount,
+    remainingBalance,
+    userLength,
+  }:any = total;
+
+  // console.log(totalExpense,grandDepositeAmount);
+
+  //   const [campaignAll, allCampaignLoading, campaignRefetch] = useCampaign();
+  // console.log(campaignAll);
+
   return (
     <div className=" ">
       {/* <Heading heading={"dashboard"}></Heading> */}
       <ImportantNotice></ImportantNotice>
 
       <div className=" border w-full bg-gray-200 p-4 mt-8">
+        <div className="p-4">
+          <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
 
-      <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            {/* Total Products Card */}
+            <div className="bg-white p-4 shadow-md rounded-lg">
+              <h2 className="text-lg font-bold text-gray-800">
+                Deposit Amount
+              </h2>
+              <p className="text-4xl font-extrabold text-blue-600">
+                {grandDepositAmount}
+              </p>
+              {/* <p className="text-4xl font-extrabold text-blue-600">0</p> */}
+            </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-        {/* Total Products Card */}
-        <div className="bg-white p-4 shadow-md rounded-lg">
-          <h2 className="text-lg font-bold text-gray-800">Deposit Amount</h2>
-          <p className="text-4xl font-extrabold text-blue-600">{totalProducts}</p>
+            {/* Total Orders Card */}
+            <div className="bg-white p-4 shadow-md rounded-lg">
+              <h2 className="text-lg font-bold text-gray-800">Total Expense</h2>
+              <p className="text-4xl font-extrabold text-green-600">
+                {grandTotalExpense}
+              </p>
+              {/* <p className="text-4xl font-extrabold text-green-600">0</p> */}
+            </div>
+
+            {/* Total Orders Card */}
+            <div className="bg-white p-4 shadow-md rounded-lg">
+              <h2 className="text-lg font-bold text-gray-800">
+                {" "}
+                Remaining Balance
+              </h2>
+              <p className="text-4xl font-extrabold text-green-600">
+                {remainingBalance}
+              </p>
+            </div>
+
+            {/* Total Users Card */}
+            <div className="bg-white p-4 shadow-md rounded-lg">
+              <h2 className="text-lg font-bold text-gray-800">Total Users</h2>
+              <p className="text-4xl font-extrabold text-yellow-600">
+                {userLength}
+              </p>
+            </div>
+          </div>
+
+          {/* Optional: Add charts or graphs here */}
+
+          {/* Quick links */}
+          <div className="mt-8 ">
+            <h2 className="text-lg font-bold mb-4">Quick Links</h2>
+            <div className="flex  flex-wrap justify-start items-center gap-4">
+              <Link
+                to="/campaign"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md w-24 text-center"
+              >
+              Campaign
+              </Link>
+              <Link
+                to="/expense"
+                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md w-24 text-center"
+              >
+                  Expense  
+              </Link>
+              <Link
+                to="/notice"
+                className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md w-24 text-center"
+              >
+                 Notice   
+              </Link>
+
+              <Link
+                to="/member"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md w-24 text-center"
+              >
+              Member
+              </Link>
+              <Link
+                to="/gallery"
+                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md w-24 text-center"
+              >
+                  Gallery  
+              </Link>
+            </div>
+          </div>
         </div>
-
-        {/* Total Orders Card */}
-        <div className="bg-white p-4 shadow-md rounded-lg">
-          <h2 className="text-lg font-bold text-gray-800">Total Expense</h2>
-          <p className="text-4xl font-extrabold text-green-600">{totalOrders}</p>
-        </div>
-
-        {/* Total Orders Card */}
-        <div className="bg-white p-4 shadow-md rounded-lg">
-          <h2 className="text-lg font-bold text-gray-800">   Remaining Balance</h2>
-          <p className="text-4xl font-extrabold text-green-600">{totalOrders}</p>
-        </div>
-
-        {/* Total Users Card */}
-        <div className="bg-white p-4 shadow-md rounded-lg">
-          <h2 className="text-lg font-bold text-gray-800">Total Users</h2>
-          <p className="text-4xl font-extrabold text-yellow-600">{totalUsers}</p>
-        </div>
- 
       </div>
 
-      {/* Optional: Add charts or graphs here */}
-      
-
-      {/* Quick links */}
-      <div className="mt-8">
-        <h2 className="text-lg font-bold mb-4">Quick Links</h2>
-        <div className="flex space-x-4">
-          <Link to="/products" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Manage Products</Link>
-          <Link to="/orders" className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md">View Orders</Link>
-          <Link to="/users" className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md">Manage Users</Link>
-        </div>
+      <ImageGallery></ImageGallery>
+     <div className="mt-24">
+     <Campaign></Campaign>
+     </div>
+     <div className="mt-24">
+     <Member state={null}></Member>
+     </div>
+      <div className="mt-24">
+      <ApartmentPage></ApartmentPage>
       </div>
-    </div>
-
-
-      </div>
-
-
- 
-<ImageGallery></ImageGallery>
-<Campaign></Campaign>
-<Member></Member>
-<ApartmentPage></ApartmentPage>
-
     </div>
   );
 };

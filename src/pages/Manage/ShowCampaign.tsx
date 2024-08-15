@@ -1,9 +1,8 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faEdit,
   faTrash,
   faHourglassHalf,
   faPlay,
@@ -20,6 +19,7 @@ import OnGoingCampaign from "./OnGoingCampaign";
 import Swal from "sweetalert2";
 
 interface TableRow {
+  _id: string; // Added this line
   startDate: string;
   endDate: string;
   purpose: string;
@@ -43,14 +43,6 @@ const ShowCampaign = () => {
     return <LoadingPage />; // Handle loading state
   }
 
-  // if (!campaigns.length) {
-  //   return (
-  //     <div>
-  //       <NoData title={"No Campaign Available"} subTitle={"campaign"} />
-  //     </div>
-  //   ); // Handle empty state
-  // }
-
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
@@ -58,8 +50,6 @@ const ShowCampaign = () => {
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
- 
- 
 
   const handleDelete = (id: string, status: string) => {
     console.log(id, status);
@@ -80,7 +70,7 @@ const ShowCampaign = () => {
         try {
           // Make PATCH request to update notice status
           const response = await fetch(
-            `http://localhost:5000/api/campaign/${id}`,
+            `https://bt-sports-backend.vercel.app/api/campaign/${id}`,
             {
               method: "PATCH",
               headers: {
@@ -107,7 +97,6 @@ const ShowCampaign = () => {
           });
 
           // Optionally refetch or update the state to reflect the change
-          // noticeRefetch();
           campaignRefetch();
         } catch (error) {
           console.error("Error updating notice:", error);
@@ -130,7 +119,6 @@ const ShowCampaign = () => {
   const onGoingData = campaigns.filter(
     (campaign) => campaign.status === "ongoing"
   );
-  // console.log(onGoingData);
 
   return (
     <div>
@@ -161,73 +149,83 @@ const ShowCampaign = () => {
       </div>
 
       {activeTab === "ongoing" ? (
-        <OnGoingCampaign onGoingData={onGoingData} campaignRefetch={campaignRefetch} />
+        <OnGoingCampaign
+          onGoingData={onGoingData}
+          campaignRefetch={campaignRefetch}
+        />
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white shadow-md rounded-lg">
-            <thead>
-              <tr className="bg-gray-200 text-center">
-                <th className="py-2 px-4">Start Date</th>
-                <th className="py-2 px-4">End Date</th>
-                <th className="py-2 px-4">Purpose</th>
-                <th className="py-2 px-4">Grand Total</th>
-
-                {user && (
-                  <>
-                    <th className="py-2 px-4">Status</th>
-                    <th className="py-2 px-4">Action</th>
-                  </>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCampaigns.length ? (
-                filteredCampaigns.map((row, index) => (
-                  <tr
-                    key={index}
-                    className="text-center border-b hover:bg-gray-100 transition-colors"
-                  >
-                    <td className="py-2 px-4">{formatDate(row.startDate)}</td>
-                    <td className="py-2 px-4">{formatDate(row.endDate)}</td>
-                    <td className="py-2 px-4">{row.purpose}</td>
-                    <td className="py-2 px-4">${row.grandTotal.toFixed(2)}</td>
-
+        <>
+          {filteredCampaigns?.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white shadow-md rounded-lg">
+                <thead>
+                  <tr className="bg-blue-400 text-center text-white ">
+                    <th className="py-4 px-4">Start Date</th>
+                    <th className="py-4 px-4">End Date</th>
+                    <th className="py-4 px-4">Purpose</th>
+                    <th className="py-4 px-4">Grand Total</th>
                     {user && (
                       <>
-                        <td className="py-2 px-4">{row.status}</td>
-                        <td className="py-2 px-4 ">
-                          <div className="flex gap-4 items-center justify-center">
-                            {row?.status === "pending" ? (
-                              <>
-                                <button
-                                  onClick={() =>
-                                    handleDelete(row?._id, "ongoing")
-                                  }
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faPlay}
-                                    className="text-blue-600"
-                                    title="ongoing"
-                                  />
-                                </button>
+                        <th className="py-4 px-4">Status</th>
+                        <th className="py-4 px-4">Action</th>
+                      </>
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredCampaigns.length ? (
+                    filteredCampaigns.map((row, index) => (
+                      <tr
+                        key={index}
+                        className="text-center border-b hover:bg-gray-100 transition-colors"
+                      >
+                        <td className="py-6 text-md px-4">
+                          {formatDate(row.startDate)}
+                        </td>
+                        <td className="py-6 text-md px-4">
+                          {formatDate(row.endDate)}
+                        </td>
+                        <td className="py-6 text-md px-4">{row.purpose}</td>
+                        <td className="py-6 text-md px-4">
+                          ${row.grandTotal.toFixed(2)}
+                        </td>
 
-                                <button
-                                  onClick={() => handleDelete(row?._id, "end")}
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faCheckCircle}
-                                    className="text-green-600"
-                                    title="end"
-                                  />
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                {row?.status === "end" ? (
+                        {user && (
+                          <>
+                            <td className="py-6 text-md px-4">{row.status}</td>
+                            <td className="py-6 text-md px-4 ">
+                              <div className="flex gap-4 items-center justify-center">
+                                {row.status === "pending" ? (
                                   <>
                                     <button
                                       onClick={() =>
-                                        handleDelete(row?._id, "pending")
+                                        handleDelete(row._id, "ongoing")
+                                      }
+                                    >
+                                      <FontAwesomeIcon
+                                        icon={faPlay}
+                                        className="text-blue-600"
+                                        title="ongoing"
+                                      />
+                                    </button>
+
+                                    <button
+                                      onClick={() =>
+                                        handleDelete(row._id, "end")
+                                      }
+                                    >
+                                      <FontAwesomeIcon
+                                        icon={faCheckCircle}
+                                        className="text-green-600"
+                                        title="end"
+                                      />
+                                    </button>
+                                  </>
+                                ) : row.status === "end" ? (
+                                  <>
+                                    <button
+                                      onClick={() =>
+                                        handleDelete(row._id, "pending")
                                       }
                                     >
                                       <FontAwesomeIcon
@@ -238,7 +236,7 @@ const ShowCampaign = () => {
                                     </button>
                                     <button
                                       onClick={() =>
-                                        handleDelete(row?._id, "ongoing")
+                                        handleDelete(row._id, "ongoing")
                                       }
                                     >
                                       <FontAwesomeIcon
@@ -252,7 +250,7 @@ const ShowCampaign = () => {
                                   <>
                                     <button
                                       onClick={() =>
-                                        handleDelete(row?._id, "pending")
+                                        handleDelete(row._id, "pending")
                                       }
                                     >
                                       <FontAwesomeIcon
@@ -264,7 +262,7 @@ const ShowCampaign = () => {
 
                                     <button
                                       onClick={() =>
-                                        handleDelete(row?._id, "end")
+                                        handleDelete(row._id, "end")
                                       }
                                     >
                                       <FontAwesomeIcon
@@ -275,38 +273,39 @@ const ShowCampaign = () => {
                                     </button>
                                   </>
                                 )}
-                              </>
-                            )}
 
-                            <button
-                              onClick={() => handleDelete(row?._id, "delete")}
-                            >
-                              {" "}
-                              <FontAwesomeIcon
-                                icon={faTrash}
-                                className="text-red-600"
-                                title="delete"
-                              />
-                            </button>
-                          </div>
-                        </td>
-                      </>
-                    )}
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={user ? 6 : 4} className="text-center py-4">
-                    No data available
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                                <button
+                                  onClick={() =>
+                                    handleDelete(row._id, "delete")
+                                  }
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faTrash}
+                                    className="text-red-600"
+                                    title="delete"
+                                  />
+                                </button>
+                              </div>
+                            </td>
+                          </>
+                        )}
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={user ? 6 : 4} className="text-center py-4">
+                        No data available
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <NoData title={"No Campaign Available"} subTitle={"campaign"} />
+          )}
+        </>
       )}
-
- 
     </div>
   );
 };

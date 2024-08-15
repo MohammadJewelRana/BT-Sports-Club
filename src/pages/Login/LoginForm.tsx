@@ -24,13 +24,16 @@ const LoginForm = () => {
 
     // const loginStatus = true;
     try {
-      const response = await fetch("http://localhost:5000/api/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        "https://bt-sports-backend.vercel.app/api/user/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       if (response.ok) {
         // Handle success
@@ -48,7 +51,7 @@ const LoginForm = () => {
       } else {
         Swal.fire({
           title: "Error!",
-          text:   "Failed to log in. Please try again.",
+          text: "Failed to log in. Please try again.",
           icon: "error",
           confirmButtonText: "OK",
         });

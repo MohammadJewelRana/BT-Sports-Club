@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Heading from "../../Layout/Heading";
 import Swal from "sweetalert2";
@@ -8,7 +9,7 @@ interface FormData {
   date: string; // Date in ISO 8601 format
 }
 
-const AddCampaign = ({refetch}) => {
+const AddCampaign = ({ refetch }: any) => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const {
     register,
@@ -25,8 +26,8 @@ const AddCampaign = ({refetch}) => {
   const onSubmit = (data: FormData) => {
     // Convert the date to ISO 8601 format
     const formattedDate = formatDateToISO(data.date);
-    
-    fetch("http://localhost:5000/api/campaign/create-campaign", {
+
+    fetch("https://bt-sports-backend.vercel.app/api/campaign/create-campaign", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,10 +48,12 @@ const AddCampaign = ({refetch}) => {
             timer: 1500,
           });
           reset();
-          refetch()
+          refetch();
         }
       })
       .catch((error) => {
+        console.log(error);
+
         Swal.fire({
           title: "Error!",
           text: "Do you want to continue",

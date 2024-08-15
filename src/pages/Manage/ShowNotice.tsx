@@ -11,9 +11,10 @@ import HeadingWithSubheading from "../../Layout/HeadingWithSubheading";
 import Swal from "sweetalert2";
 
 interface Notice {
+  _id: string; // Add _id to interface
   date: string;
   subject: string;
-  notice: string;
+  description: string; // Add description to interface
   status: string;
 }
 
@@ -53,9 +54,9 @@ const ShowNotice = () => {
 
   console.log(notices);
 
-  const handleDeleteNotice = (id) => {
+  const handleDeleteNotice = (id: string) => {
     console.log(id);
-    // http://localhost:5000/api/notice/66b8c4087862325876f6a247
+    // https://bt-sports-backend.vercel.app/api/notice/66b8c4087862325876f6a247
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -68,7 +69,7 @@ const ShowNotice = () => {
       if (result.isConfirmed) {
         try {
           const response = await fetch(
-            `http://localhost:5000/api/notice/${id}`,
+            `https://bt-sports-backend.vercel.app/api/notice/${id}`,
             {
               method: "DELETE",
               headers: {
@@ -89,13 +90,13 @@ const ShowNotice = () => {
             icon: "success",
           });
 
-          // Optionally refetch the user list or update the state to remove the deleted user
+          // Optionally refetch the notice list or update the state to remove the deleted notice
           noticeRefetch();
         } catch (error) {
-          console.error("Error deleting user:", error);
+          console.error("Error deleting notice:", error);
           Swal.fire({
             title: "Error!",
-            text: "Failed to delete the user. Please try again.",
+            text: "Failed to delete the notice. Please try again.",
             icon: "error",
             confirmButtonText: "OK",
           });
@@ -103,7 +104,8 @@ const ShowNotice = () => {
       }
     });
   };
-  const handleUpdate = async (status, id) => {
+
+  const handleUpdate = async (status: string, id: string) => {
     console.log(status, id);
 
     // Show confirmation alert
@@ -120,7 +122,7 @@ const ShowNotice = () => {
         try {
           // Make PATCH request to update notice status
           const response = await fetch(
-            `http://localhost:5000/api/notice/${id}`,
+            `https://bt-sports-backend.vercel.app/api/notice/${id}`,
             {
               method: "PATCH",
               headers: {
@@ -164,73 +166,88 @@ const ShowNotice = () => {
       {user && <AddNotice refetch={noticeRefetch}></AddNotice>}
 
       <HeadingWithSubheading
-        heading={"  all Notice"}
-        subheading={"All  important notice information "}
+        heading={"All Notices"}
+        subheading={"All important notice information"}
       ></HeadingWithSubheading>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded-lg">
-          <thead>
-            <tr className="bg-gray-200 text-center">
-              <th className="py-2 px-4">Date</th>
-              <th className="py-2 px-4">Subject</th>
-              <th className="py-2 px-4">Notice</th>
+        {notices?.length > 0 ? (
+          <>
+            <table className="min-w-full bg-white shadow-md rounded-lg">
+              <thead>
+                <tr className="bg-gray-200 text-center">
+                  <th className="py-2 px-4">Date</th>
+                  <th className="py-2 px-4">Subject</th>
+                  <th className="py-2 px-4">Notice</th>
 
-              {user && (
-                <>
-                  <th className="py-2 px-4">Status</th>
-                  <th className="py-2 px-4">Action</th>
-                </>
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {notices.map((notice, index) => (
-              <tr key={index} className="text-center border-b">
-                <td className="py-2 px-4">{formatDate(notice.date)}</td>
-                <td className="py-2 px-4">{notice.subject}</td>
-                <td className="py-2 px-4">{notice.description}</td>
+                  {user && (
+                    <>
+                      <th className="py-2 px-4">Status</th>
+                      <th className="py-2 px-4">Action</th>
+                    </>
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {notices.map((notice, index) => (
+                  <tr key={index} className="text-center border-b">
+                    <td className="py-2 px-4">{formatDate(notice.date)}</td>
+                    <td className="py-2 px-4">{notice.subject}</td>
+                    <td className="py-2 px-4">{notice.description}</td>
 
-                {user && (
-                  <>
-                    <td className="py-2 px-4">{notice.status}</td>
-                    <td className="py-2 px-4 flex justify-center space-x-2">
-                      {notice.status === "pending" ? (
-                        <>
+                    {user && (
+                      <>
+                        <td className="py-2 px-4">{notice.status}</td>
+                        <td className="py-2 px-4 flex justify-center space-x-2">
+                          {notice.status === "pending" ? (
+                            <>
+                              <button
+                                onClick={() =>
+                                  handleUpdate("approved", notice._id)
+                                }
+                              >
+                                <FontAwesomeIcon icon={faCheckCircle} />
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <button
+                                onClick={() =>
+                                  handleUpdate("pending", notice._id)
+                                }
+                              >
+                                <FontAwesomeIcon
+                                  icon={faCheckCircle}
+                                  className="text-green-600" // Tailwind custom color class
+                                />
+                              </button>
+                            </>
+                          )}
+
                           <button
-                            onClick={() =>
-                              handleUpdate("approved", notice?._id)
-                            }
+                            className="text-red-500 hover:text-red-700"
+                            title="Delete"
+                            onClick={() => handleDeleteNotice(notice._id)}
                           >
-                            <FontAwesomeIcon icon={faCheckCircle} />
+                            <FontAwesomeIcon icon={faTrash} />
                           </button>
-                        </>
-                      ) : (
-                        <>
-                          <button
-                            onClick={() => handleUpdate("pending", notice?._id)}
-                          >
-                            <FontAwesomeIcon
-                              icon={faCheckCircle}
-                              className="text-green-600" // Tailwind custom color class
-                            />
-                          </button>
-                        </>
-                      )}
-
-                      <button
-                        className="text-red-500 hover:text-red-700"
-                        title="Delete"
-                        onClick={() => handleDeleteNotice(notice._id)}
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
-                    </td>
-                  </>
-                )}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                        </td>
+                      </>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        ) : (
+          <>
+            <div>
+              <NoData
+                title={"No Notices Available"}
+                subTitle={"notice"}
+              ></NoData>
+            </div>
+          </>
+        )}
       </div>
 
       <div></div>

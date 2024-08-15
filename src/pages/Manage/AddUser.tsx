@@ -17,7 +17,8 @@ const img_hosting_token = import.meta.env.VITE_Image_Upload_Token;
 
 const AddUser = () => {
   const [showForm, setShowForm] = useState(false); // State to toggle form visibility
-  const [state,setState]=useState(false)
+  const [state, setState] = useState(false);
+  const [loading, setLoading] = useState(false); // Loading state for submit button
   const {
     control,
     handleSubmit,
@@ -33,6 +34,7 @@ const AddUser = () => {
   const img_hosting_url = `https://api.imgbb.com/1/upload?key=${img_hosting_token}`;
 
   const onSubmit = async (data: FormData) => {
+    setLoading(true); // Set loading to true when starting submission
     const imageFile = data.image[0];
     const { name, profession, whatsapp, buildingNumber, flatName } = data;
 
@@ -56,7 +58,7 @@ const AddUser = () => {
               profileImg: imgURL,
             };
 
-            fetch("http://localhost:5000/api/user/create-user", {
+            fetch("https://bt-sports-backend.vercel.app/api/user/create-user", {
               method: "POST",
               headers: {
                 "content-type": "application/json",
@@ -65,19 +67,22 @@ const AddUser = () => {
             })
               .then((res) => res.json())
               .then((data) => {
+                setLoading(false); // Set loading to false when done
                 if (data?.success === true) {
                   Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: " User added successfully!!",
+                    title: "User added successfully!",
                     showConfirmButton: false,
                     timer: 1500,
                   });
                   reset();
-                  setState(true)
+                  setState(true);
                 }
               })
               .catch((error) => {
+                setLoading(false); // Set loading to false on error
+                console.log(error);
                 Swal.fire({
                   title: "Error!",
                   text: "Do you want to continue",
@@ -110,9 +115,9 @@ const AddUser = () => {
       <Heading heading={"Add User"}></Heading>
       <button
         onClick={() => setShowForm(!showForm)} // Toggle form visibility
-        className="bg-blue-500 mt-2 float-right  text-white p-2 rounded "
+        className="bg-blue-500 mt-2 float-right text-white p-2 rounded"
       >
-        {showForm ? "Hide   Form" : " Add User "}
+        {showForm ? "Hide Form" : "Add User"}
       </button>
 
       {showForm && (
@@ -124,33 +129,32 @@ const AddUser = () => {
               <input
                 type="text"
                 {...register("name", { required: "Name is required" })}
+                placeholder="Enter the user's name"
                 className="w-full p-2 border border-gray-300 rounded"
               />
             </div>
 
-            <div>
-              <div className="mb-6 w-full">
-                <label htmlFor="name" className="block mb-2 ml-1">
-                  Profession:
-                </label>
-                <select
-                  className="border w-full px-3 py-2 rounded-lg text-black"
-                  {...register("profession", { required: true })}
-                >
-                  <option value=""> Profession</option>
-                  <option value="Student">Student</option>
-                  <option value="Doctor"> Doctor </option>
-                  <option value="Engineer"> Engineer </option>
-                  <option value="Banker"> Banker </option>
-                  <option value="Businessman"> Businessman </option>
-                  <option value="Others"> Others.. </option>
-                </select>
-                {errors.profession && (
-                  <span className="mt-4 text-red-600">
-                    This field is required
-                  </span>
-                )}
-              </div>
+            <div className="mb-6 w-full">
+              <label htmlFor="profession" className="block mb-2 ml-1">
+                Profession:
+              </label>
+              <select
+                className="border w-full px-3 py-2 rounded-lg text-black"
+                {...register("profession", { required: true })}
+              >
+                <option value="">Profession</option>
+                <option value="Student">Student</option>
+                <option value="Doctor">Doctor</option>
+                <option value="Engineer">Engineer</option>
+                <option value="Banker">Banker</option>
+                <option value="Businessman">Businessman</option>
+                <option value="Others">Others..</option>
+              </select>
+              {errors.profession && (
+                <span className="mt-4 text-red-600">
+                  This field is required
+                </span>
+              )}
             </div>
 
             <div className="mb-4">
@@ -160,9 +164,11 @@ const AddUser = () => {
                 {...register("whatsapp", {
                   required: "WhatsApp is required",
                 })}
+                placeholder="Enter WhatsApp number"
                 className="w-full p-2 border border-gray-300 rounded"
               />
             </div>
+
             <div className="flex justify-between">
               <div className="mb-4 w-[48%]">
                 <label className="block text-gray-700">Building Number</label>
@@ -171,6 +177,7 @@ const AddUser = () => {
                   {...register("buildingNumber", {
                     required: "Building Number is required",
                   })}
+                  placeholder="Enter building number"
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
@@ -182,6 +189,7 @@ const AddUser = () => {
                   {...register("flatName", {
                     required: "Flat Name is required",
                   })}
+                  placeholder="Enter flat name"
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
@@ -197,8 +205,10 @@ const AddUser = () => {
                     type="file"
                     accept="image/*"
                     onChange={(e) => {
-                      onChange(e.target.files);
-                      setValue("image", e.target.files);
+                      // Ensure files is not null
+                      const files = e.target.files || new DataTransfer().files;
+                      onChange(files);
+                      setValue("image", files);
                     }}
                     className="w-full p-2 border border-gray-300 rounded"
                   />
@@ -216,9 +226,22 @@ const AddUser = () => {
             )}
             <button
               type="submit"
-              className="bg-blue-500 w-full text-white p-2 rounded"
+              className={`bg-blue-500 w-full text-white p-2 rounded ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={loading} // Disable button while loading
             >
-              Submit
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <svg
+                    className="animate-spin h-5 w-5 mr-3 border-t-2 border-white rounded-full border-solid border-blue-500"
+                    viewBox="0 0 24 24"
+                  ></svg>
+                  Loading...
+                </span>
+              ) : (
+                "Submit"
+              )}
             </button>
           </form>
         </div>

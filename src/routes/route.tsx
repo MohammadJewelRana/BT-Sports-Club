@@ -6,18 +6,20 @@ import Member from "../pages/Member/Member";
 import Campaign from "../pages/Campaign/Campaign";
 import LoginForm from "../pages/Login/LoginForm";
 import AddUser from "../pages/Manage/AddUser";
- 
+
 import Notice from "../pages/Notice/Notice";
 import ShowNotice from "../pages/Manage/ShowNotice";
- 
+
 import ShowCampaign from "../pages/Manage/ShowCampaign";
 import ShowExpense from "../pages/Manage/ShowExpense";
+import Gallery from "../pages/Gallery/Gallery";
+import LoadingPage from "../pages/Shared/LoadingPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
-
+    errorElement: <LoadingPage></LoadingPage>,
     children: [
       {
         index: true,
@@ -34,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/campaign",
         element: <Campaign></Campaign>,
+      },
+      {
+        path: "/gallery",
+        element: <Gallery></Gallery>,
       },
       {
         path: "/expense",

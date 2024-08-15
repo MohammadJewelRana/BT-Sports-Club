@@ -1,20 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 
-const useExpense = () => {
+const useNotice = () => {
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["expense"],
+    queryKey: ["image"],
     // enabled: loading,
 
     queryFn: async () => {
       const res = await fetch(
-        "https://bt-sports-backend.vercel.app/api/campaign/expense"
+        "https://bt-sports-backend.vercel.app/api/user/image/all"
       );
       // console.log(res);
       return res.json();
     },
   });
 
-  return [data, isLoading, refetch];
+  return [data?.data, isLoading, refetch];
 };
 
-export default useExpense;
+export default useNotice;

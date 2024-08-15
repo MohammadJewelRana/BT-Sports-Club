@@ -1,27 +1,28 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Heading from "../../Layout/Heading";
 import useAuth from "../../utils/getUser";
 import Swal from "sweetalert2";
+import NoData from "../Shared/NoData";
 
-const OnGoingCampaign = ({ onGoingData, campaignRefetch }) => {
+const OnGoingCampaign = ({ onGoingData, campaignRefetch }: any) => {
   const { register, handleSubmit, reset } = useForm();
   const [selectedMemberId, setSelectedMemberId] = useState();
   const [campaignId, setCampaignId] = useState();
   const [paidAmount, setPaidAmount] = useState(null);
   const user = useAuth();
 
-  // const handlePaidAmount = (id) => {
-  //   setSelectedMemberId(id);
-  //   document.getElementById("my_modal_6").checked = true;
-  // };
-  const handleUpdate = (memberId, campaignId) => {
+  const handleUpdate = (memberId: any, campaignId: any) => {
     setSelectedMemberId(memberId);
     setCampaignId(campaignId);
     console.log(memberId, campaignId);
   };
 
-  const onSubmit = (data) => {
+  console.log(paidAmount);
+
+  const onSubmit = (data: any) => {
     setPaidAmount(data.paidAmount);
     // console.log("Paid Amount:", data.paidAmount);
     // console.log("Selected Member ID:", selectedMemberId);
@@ -47,7 +48,7 @@ const OnGoingCampaign = ({ onGoingData, campaignRefetch }) => {
         try {
           // Make PATCH request to update notice status
           const response = await fetch(
-            `http://localhost:5000/api/campaign/${campaignId}`,
+            `https://bt-sports-backend.vercel.app/api/campaign/${campaignId}`,
             {
               method: "PATCH",
               headers: {
@@ -93,62 +94,77 @@ const OnGoingCampaign = ({ onGoingData, campaignRefetch }) => {
       <Heading heading={"Ongoing Campaign"} />
 
       <div className="mb-12 mt-4">
-        {onGoingData?.map((item) => (
-          <div key={item.id}>
-            <div className="py-4 text-center">
-              <h1 className="text-xl text-green-600 font-semibold">
-                Campaign Purpose:{" "}
-                <span className="text-green-800 capitalize">
-                  {item?.purpose}
-                </span>
-              </h1>
-            </div>
-            <div className="overflow-x-auto mb-24">
-              <table className="min-w-full bg-white shadow-md rounded-lg">
-                <thead>
-                  <tr className="bg-gray-200 text-center">
-                    <th className="py-2 px-4">Name</th>
-                    <th className="py-2 px-4">Amount</th>
-                    <th className="py-2 px-4">Status</th>
-                    {user && <th className="py-2 px-4">Action</th>}
-                  </tr>
-                </thead>
-                <tbody>
-                  {item?.members.map((data) => (
-                    <tr
-                      key={data._id}
-                      className="text-center border-b hover:bg-gray-100 transition-colors"
-                    >
-                      <td className="py-2 px-4">{data?.name}</td>
-                      <td className="py-2 px-4">{data?.paidAmount}</td>
-                      <td className="py-2 px-4">{data?.paymentStatus}</td>
-                      {user && (
-                        <td className="py-2 px-4">
-                          {data?.paymentStatus === "paid" ? (
-                            <p className="text-green-600">Completed</p>
-                          ) : (
-                            <button
-                              onClick={() => handleUpdate(data?.id, item?._id)}
-                            >
-                              <label htmlFor="my_modal_6" className="btn">
-                                Pay
-                              </label>
-                            </button>
+        {onGoingData?.length > 0 ? (
+          <>
+            {onGoingData?.map((item: any) => (
+              <div key={item.id}>
+                <div className="py-4 text-center">
+                  <h1 className="text-xl text-green-600 font-semibold">
+                    Campaign Purpose:{" "}
+                    <span className="text-green-800 capitalize">
+                      {item?.purpose}
+                    </span>
+                  </h1>
+                </div>
+                <div className="overflow-x-auto mb-24">
+                  <table className="min-w-full bg-white shadow-md rounded-lg">
+                    <thead>
+                      <tr className="bg-gray-200 text-center">
+                        <th className="py-2 px-4">Name</th>
+                        <th className="py-2 px-4">Amount</th>
+                        <th className="py-2 px-4">Status</th>
+                        {user && <th className="py-2 px-4">Action</th>}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {item?.members.map((data: any) => (
+                        <tr
+                          key={data._id}
+                          className="text-center border-b hover:bg-gray-100 transition-colors"
+                        >
+                          <td className="py-2 px-4">{data?.name}</td>
+                          <td className="py-2 px-4">{data?.paidAmount}</td>
+                          <td className="py-2 px-4">{data?.paymentStatus}</td>
+                          {user && (
+                            <td className="py-2 px-4">
+                              {data?.paymentStatus === "paid" ? (
+                                <p className="text-green-600">Completed</p>
+                              ) : (
+                                <button
+                                  onClick={() =>
+                                    handleUpdate(data?.id, item?._id)
+                                  }
+                                >
+                                  <label htmlFor="my_modal_6" className="btn">
+                                    Pay
+                                  </label>
+                                </button>
+                              )}
+                            </td>
                           )}
-                        </td>
-                      )}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <div className="float-right">
-                <p className="font-bold text-gray-500 py-4 pr-8 text-lg">
-                  Grand Total: <span>{item?.grandTotal}</span>
-                </p>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <div className="float-right">
+                    <p className="font-bold text-gray-500 py-4 pr-8 text-lg">
+                      Grand Total: <span>{item?.grandTotal}</span>
+                    </p>
+                  </div>
+                </div>
               </div>
+            ))}
+          </>
+        ) : (
+          <>
+            <div>
+              <NoData
+                title={"No Ongoing Campaign Available"}
+                subTitle={" ongoing campaign"}
+              ></NoData>
             </div>
-          </div>
-        ))}
+          </>
+        )}
       </div>
 
       <input type="checkbox" id="my_modal_6" className="modal-toggle" />

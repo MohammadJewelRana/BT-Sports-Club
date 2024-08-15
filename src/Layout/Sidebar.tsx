@@ -6,6 +6,7 @@ import useAuth from "../utils/getUser";
 import Swal from "sweetalert2";
 
 import useSetUser from "../utils/setUser";
+import logo from '../assets/logo/images.png'
 
 const { Sider } = Layout;
 
@@ -58,7 +59,7 @@ const Sidebar = () => {
     },
     {
       key: "4",
-      label: <NavLink to="">Gallery </NavLink>,
+      label: <NavLink to="/gallery">Gallery </NavLink>,
     },
     {
       key: "5",
@@ -134,9 +135,10 @@ const Sidebar = () => {
           alignItems: "center",
         }}
       >
-        <h1 className="text-red-400  capitalize font-bold italic text-xl">
+        <img src={logo} alt="BT" className="h-10 w-10 rounded-full  " />
+        <h1 className="text-red-400  capitalize font-bold italic text-xl ml-2">
           {" "}
-          BT <span className="text-yellow-300">Sports</span>{" "}
+          BT <span className="text-yellow-300">Sports</span> <span className="text-green-600">Club</span>
         </h1>
       </div>
 

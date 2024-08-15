@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Swal from "sweetalert2";
 import useExpense from "../../hooks/useExpense";
 import HeadingWithSubheading from "../../Layout/HeadingWithSubheading";
@@ -10,7 +11,9 @@ const ShowExpense = () => {
   const [data, isLoading, refetch] = useExpense();
   // console.log(data);
   const expenseData = data?.data;
-const user=useAuth();
+  console.log(expenseData);
+
+  const user = useAuth();
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
@@ -22,7 +25,11 @@ const user=useAuth();
   if (isLoading) {
     return <LoadingPage></LoadingPage>;
   }
-  const handleDelete = (id) => {
+
+  const grandTotal = expenseData?.reduce((total: any, expense: any) => {
+    return total + expense.totalCost;
+  }, 0);
+  const handleDelete = (id: string) => {
     console.log(id);
 
     Swal.fire({
@@ -38,7 +45,7 @@ const user=useAuth();
         try {
           // Make PATCH request to update notice status
           const response = await fetch(
-            `http://localhost:5000/api/campaign/expense/${id}`,
+            `https://bt-sports-backend.vercel.app/api/campaign/expense/${id}`,
             {
               method: "PATCH",
               headers: {
@@ -76,9 +83,11 @@ const user=useAuth();
 
   return (
     <div>
-       {user && <div>
-        <AddExpense refetch={refetch} />
-      </div>}
+      {user && (
+        <div>
+          <AddExpense refetch={refetch} />
+        </div>
+      )}
 
       <div>
         <HeadingWithSubheading
@@ -97,11 +106,13 @@ const user=useAuth();
                   <th className="px-4 py-2 border-b text-white">Tape Count</th>
                   <th className="px-4 py-2 border-b text-white">Tape Cost</th>
                   <th className="px-4 py-2 border-b text-white">Total</th>
-                   {user && <th className="px-4 py-2 border-b text-white">Action</th>}
+                  {user && (
+                    <th className="px-4 py-2 border-b text-white">Action</th>
+                  )}
                 </tr>
               </thead>
               <tbody>
-                {expenseData?.map((item, index) => (
+                {expenseData?.map((item: any, index: any) => (
                   <tr
                     key={index}
                     className="hover:bg-gray-100 cursor-pointer text-center"
@@ -116,20 +127,25 @@ const user=useAuth();
                     <td className="px-4 py-2 border-b">{item.tapeCost}</td>
                     <td className="px-4 py-2 border-b">{item.totalCost}</td>
 
-                    {user &&
-                     <td className="px-4 py-2 border-b text-center">
-                     <button
-                       onClick={() => handleDelete(item._id)}
-                       className="text-red-600 hover:text-red-800"
-                     >
-                       <FaTrashAlt />
-                     </button>
-                   </td>
-                    }
+                    {user && (
+                      <td className="px-4 py-2 border-b text-center">
+                        <button
+                          onClick={() => handleDelete(item._id)}
+                          className="text-red-600 hover:text-red-800"
+                        >
+                          <FaTrashAlt />
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
             </table>
+            <div className="float-right">
+              <p className="font-bold text-gray-500 py-4 pr-8 text-lg">
+                Grand Total: <span> {grandTotal}</span>
+              </p>
+            </div>
           </div>
         </div>
       </div>

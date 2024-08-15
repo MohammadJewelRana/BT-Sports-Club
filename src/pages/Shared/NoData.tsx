@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
  
 
-const NoData = ({title,subTitle}) => {
+const NoData = ({title,subTitle}:any) => {
   return (
     <div>
 
