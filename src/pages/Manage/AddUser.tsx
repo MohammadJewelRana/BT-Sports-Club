@@ -130,8 +130,13 @@ const AddUser = () => {
                 type="text"
                 {...register("name", { required: "Name is required" })}
                 placeholder="Enter the user's name"
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-2 border border-gray-300 rounded bg-white text-black"
               />
+              {errors.name && (
+                <span className="text-red-600 mt-1 block">
+                  {errors.name.message}
+                </span>
+              )}
             </div>
 
             <div className="mb-6 w-full">
@@ -139,10 +144,10 @@ const AddUser = () => {
                 Profession:
               </label>
               <select
-                className="border w-full px-3 py-2 rounded-lg text-black"
-                {...register("profession", { required: true })}
+                className="border w-full px-3 py-2 rounded-lg text-black bg-white"
+                {...register("profession", { required: "Profession is required" })}
               >
-                <option value="">Profession</option>
+                <option value="">Select Profession</option>
                 <option value="Student">Student</option>
                 <option value="Doctor">Doctor</option>
                 <option value="Engineer">Engineer</option>
@@ -151,8 +156,8 @@ const AddUser = () => {
                 <option value="Others">Others..</option>
               </select>
               {errors.profession && (
-                <span className="mt-4 text-red-600">
-                  This field is required
+                <span className="mt-1 text-red-600 block">
+                  {errors.profession.message}
                 </span>
               )}
             </div>
@@ -165,8 +170,13 @@ const AddUser = () => {
                   required: "WhatsApp is required",
                 })}
                 placeholder="Enter WhatsApp number"
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-2 border border-gray-300 rounded bg-white text-black"
               />
+              {errors.whatsapp && (
+                <span className="text-red-600 mt-1 block">
+                  {errors.whatsapp.message}
+                </span>
+              )}
             </div>
 
             <div className="flex justify-between">
@@ -178,8 +188,13 @@ const AddUser = () => {
                     required: "Building Number is required",
                   })}
                   placeholder="Enter building number"
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded bg-white text-black"
                 />
+                {errors.buildingNumber && (
+                  <span className="text-red-600 mt-1 block">
+                    {errors.buildingNumber.message}
+                  </span>
+                )}
               </div>
 
               <div className="mb-4 w-[48%]">
@@ -190,8 +205,13 @@ const AddUser = () => {
                     required: "Flat Name is required",
                   })}
                   placeholder="Enter flat name"
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded bg-white text-black"
                 />
+                {errors.flatName && (
+                  <span className="text-red-600 mt-1 block">
+                    {errors.flatName.message}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -210,10 +230,15 @@ const AddUser = () => {
                       onChange(files);
                       setValue("image", files);
                     }}
-                    className="w-full p-2 border border-gray-300 rounded"
+                    className="w-full p-2 border border-gray-300 rounded bg-white text-black"
                   />
                 )}
               />
+              {errors.image && (
+                <span className="text-red-600 mt-1 block">
+                  {errors.image.message}
+                </span>
+              )}
             </div>
             {imagePreview && (
               <div className="mb-4">

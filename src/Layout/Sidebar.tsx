@@ -293,7 +293,11 @@ const Sidebar = () => {
 
   return (
     <>
-      <Sider className="hidden lg:block" breakpoint="lg" collapsedWidth="0">
+      <Sider
+        className="hidden lg:block fixed left-0 top-0"
+        breakpoint="lg"
+        collapsedWidth="0"
+      >
         <div
           style={{
             color: "white",

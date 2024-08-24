@@ -6,6 +6,7 @@ import LoadingPage from "../Shared/LoadingPage";
 import AddExpense from "./AddExpense";
 import { FaTrashAlt } from "react-icons/fa";
 import useAuth from "../../utils/getUser";
+ 
 
 const ShowExpense = () => {
   const [data, isLoading, refetch] = useExpense();
@@ -83,6 +84,9 @@ const ShowExpense = () => {
 
   return (
     <div>
+
+ 
+
       {user && (
         <div>
           <AddExpense refetch={refetch} />

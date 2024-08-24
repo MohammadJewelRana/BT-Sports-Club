@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Link } from "react-router-dom";
+ 
 
 import ImportantNotice from "../pages/Home/ImportantNotice";
 import ImageGallery from "../pages/Home/ImageGallery";
@@ -8,6 +8,7 @@ import Member from "../pages/Member/Member";
 import ApartmentPage from "../pages/Home/ApartmentPage";
 
 import { totalCalculation } from "../utils/moneyCalculation";
+import QuickLinks from "../pages/Shared/QuickLinks";
 
 const Dashboard = () => {
   const total = totalCalculation();
@@ -77,7 +78,7 @@ const Dashboard = () => {
           {/* Optional: Add charts or graphs here */}
 
           {/* Quick links */}
-          <div className="mt-8 ">
+          {/* <div className="mt-8 ">
             <h2 className="text-lg font-bold mb-4">Quick Links</h2>
             <div className="flex  flex-wrap justify-start items-center gap-4">
               <Link
@@ -112,7 +113,11 @@ const Dashboard = () => {
                   Gallery  
               </Link>
             </div>
-          </div>
+          </div> */}
+
+<QuickLinks></QuickLinks>
+
+
         </div>
       </div>
 

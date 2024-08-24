@@ -89,7 +89,7 @@ const AddCampaign = ({ refetch }: any) => {
                     required: "Campaign purpose is required",
                   })}
                   placeholder="Enter campaign purpose"
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded bg-white text-black"
                 />
                 {errors.purpose && (
                   <p className="text-red-500 mt-1">{errors.purpose.message}</p>
@@ -103,7 +103,7 @@ const AddCampaign = ({ refetch }: any) => {
                   {...register("date", {
                     required: "Date is required",
                   })}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded bg-white text-black"
                 />
                 {errors.date && (
                   <p className="text-red-500 mt-1">{errors.date.message}</p>

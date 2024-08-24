@@ -22,7 +22,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // Fetch user data from localStorage
     const storedUser = localStorage.getItem('userData');
-    if (storedUser) {
+    if (storedUser) {    
       try {
         const parsedUser: User = JSON.parse(storedUser);
         setUser(parsedUser);

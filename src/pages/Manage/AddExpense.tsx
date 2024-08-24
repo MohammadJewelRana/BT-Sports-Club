@@ -105,7 +105,7 @@ const AddExpense = ({ refetch }: any) => {
                     required: "Buyer name is required",
                   })}
                   placeholder="Enter buyer name"
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded bg-white text-black"
                 />
                 {errors.buyer && (
                   <p className="text-red-500 mt-1">{errors.buyer.message}</p>
@@ -121,7 +121,7 @@ const AddExpense = ({ refetch }: any) => {
                     {...register("numberOfBall", {
                       required: "Number of balls is required",
                     })}
-                    className="w-1/2 p-2 border border-gray-300 rounded"
+                    className="w-1/2 p-2 border border-gray-300 rounded bg-white text-black"
                   >
                     <option value="">Select number of balls</option>
                     <option value="0">0 Ball</option>
@@ -138,7 +138,7 @@ const AddExpense = ({ refetch }: any) => {
                       valueAsNumber: true,
                     })}
                     placeholder="Enter ball cost"
-                    className="w-1/2 p-2 border border-gray-300 rounded"
+                    className="w-1/2 p-2 border border-gray-300 rounded bg-white text-black"
                   />
                 </div>
                 {errors.numberOfBall && (
@@ -160,7 +160,7 @@ const AddExpense = ({ refetch }: any) => {
                     {...register("numberOfTape", {
                       required: "Number of tapes is required",
                     })}
-                    className="w-1/2 p-2 border border-gray-300 rounded"
+                    className="w-1/2 p-2 border border-gray-300 rounded bg-white text-black"
                   >
                     <option value="">Select number of tapes</option>
                     <option value="0">0 Tape</option>
@@ -177,7 +177,7 @@ const AddExpense = ({ refetch }: any) => {
                       valueAsNumber: true,
                     })}
                     placeholder="Enter tape cost"
-                    className="w-1/2 p-2 border border-gray-300 rounded"
+                    className="w-1/2 p-2 border border-gray-300 rounded bg-white text-black"
                   />
                 </div>
                 {errors.numberOfTape && (
@@ -197,7 +197,7 @@ const AddExpense = ({ refetch }: any) => {
                   {...register("buyDate", {
                     required: "Buy date is required",
                   })}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded bg-white text-black"
                 />
                 {errors.buyDate && (
                   <p className="text-red-500 mt-1">{errors.buyDate.message}</p>

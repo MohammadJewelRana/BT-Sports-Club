@@ -7,8 +7,6 @@ const useCampaign = () => {
     refetch: campaignRefetch,
   } = useQuery({
     queryKey: ["campaign"],
-    // enabled: loading,
-
     queryFn: async () => {
       const res = await fetch(
         "https://bt-sports-backend.vercel.app/api/campaign"

@@ -87,7 +87,7 @@ const AddNotice = ({ refetch }: any) => {
                     required: "Notice subject is required",
                   })}
                   placeholder="Enter notice subject"
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded bg-white text-black"
                 />
                 {errors.subject && (
                   <p className="text-red-500 mt-1">{errors.subject.message}</p>
@@ -101,7 +101,7 @@ const AddNotice = ({ refetch }: any) => {
                     required: "Details are required",
                   })}
                   placeholder="Enter notice details"
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded bg-white text-black"
                   rows={5}
                 />
                 {errors.description && (

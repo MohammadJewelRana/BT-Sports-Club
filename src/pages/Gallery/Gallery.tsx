@@ -19,7 +19,8 @@ const Gallery = () => {
         subheading={"All images of our beautiful members"}
       />
 
-      <div className="flex flex-wrap justify-center gap-4 mt-8">
+      <div className=" grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8 items-content-center mt-8">
+      {/* <div className="flex flex-wrap justify-center gap-4 mt-8"> */}
         {data?.length > 0 ? (
           <>
             {data.map((image: any, index: any) => (
