@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
- 
 
 import ImportantNotice from "../pages/Home/ImportantNotice";
 import ImageGallery from "../pages/Home/ImageGallery";
@@ -9,6 +8,7 @@ import ApartmentPage from "../pages/Home/ApartmentPage";
 
 import { totalCalculation } from "../utils/moneyCalculation";
 import QuickLinks from "../pages/Shared/QuickLinks";
+import BallLost from "../pages/Manage/BallLost";
 
 const Dashboard = () => {
   const total = totalCalculation();
@@ -18,7 +18,7 @@ const Dashboard = () => {
     grandDepositAmount,
     remainingBalance,
     userLength,
-  }:any = total;
+  }: any = total;
 
   // console.log(totalExpense,grandDepositeAmount);
 
@@ -115,21 +115,22 @@ const Dashboard = () => {
             </div>
           </div> */}
 
-<QuickLinks></QuickLinks>
-
-
+          <QuickLinks></QuickLinks>
         </div>
       </div>
 
       <ImageGallery></ImageGallery>
-     <div className="mt-24">
-     <Campaign></Campaign>
-     </div>
-     <div className="mt-24">
-     <Member state={null}></Member>
-     </div>
       <div className="mt-24">
-      <ApartmentPage></ApartmentPage>
+        <Campaign></Campaign>
+      </div>
+      <div className="mt-24">
+        <BallLost></BallLost>
+      </div>
+      <div className="mt-24">
+        <Member state={null}></Member>
+      </div>
+      <div className="mt-24">
+        <ApartmentPage></ApartmentPage>
       </div>
     </div>
   );

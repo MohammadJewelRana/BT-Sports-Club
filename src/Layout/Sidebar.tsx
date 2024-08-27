@@ -274,6 +274,14 @@ const Sidebar = () => {
       ),
     },
     {
+      key: "468",
+      label: (
+        <NavLink to="/ballLost" onClick={handleMenuClick}>
+          Ball Lost
+        </NavLink>
+      ),
+    },
+    {
       key: "5",
       label: (
         <NavLink to="/rules" onClick={handleMenuClick}>
@@ -344,6 +352,11 @@ const Sidebar = () => {
               <Menu.Item key="2887">
                 <NavLink to="/expense" onClick={handleMenuClick}>
                   Expense
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item key="28875">
+                <NavLink to="/ballLost" onClick={handleMenuClick}>
+                  Ball Lost
                 </NavLink>
               </Menu.Item>
               <Menu.Item key="22">

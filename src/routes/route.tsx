@@ -14,6 +14,7 @@ import ShowCampaign from "../pages/Manage/ShowCampaign";
 import ShowExpense from "../pages/Manage/ShowExpense";
 import Gallery from "../pages/Gallery/Gallery";
 import LoadingPage from "../pages/Shared/LoadingPage";
+import BallLost from "../pages/Manage/BallLost";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "/notice",
         element: <Notice></Notice>,
+      },
+      {
+        path: "/ballLost",
+        element: <BallLost></BallLost>,
       },
 
       // {

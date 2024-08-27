@@ -1,4 +1,4 @@
- /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import useUser from "../../hooks/useUser";
@@ -51,6 +51,8 @@ const Member = ({ state }: { state: any }) => {
   }
 
   const handleDelete = async (id: string) => {
+    console.log(id);
+
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -116,7 +118,11 @@ const Member = ({ state }: { state: any }) => {
       let imageUrl = imgProfile;
 
       // If a new image has been selected, upload it to ImgBB
-      if (imgProfile && typeof imgProfile === "object" && imgProfile instanceof File) {
+      if (
+        imgProfile &&
+        typeof imgProfile === "object" &&
+        imgProfile instanceof File
+      ) {
         const formData = new FormData();
         formData.append("image", imgProfile);
 
@@ -185,8 +191,15 @@ const Member = ({ state }: { state: any }) => {
                   <th className="py-4">Picture</th>
                   <th className="py-4">Name</th>
                   <th className="py-4">Profession</th>
+                  <th className="py-4">Address</th>
                   <th className="py-4">WhatsApp</th>
-                  {user && <th>Action</th>}
+                  <th className="">Status</th>
+                  {user && (
+                    <>
+                      {" "}
+                      <th>Action</th>
+                    </>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -204,6 +217,14 @@ const Member = ({ state }: { state: any }) => {
                     </td>
                     <td className="p-2 truncate">{contact.name}</td>
                     <td className="p-2 truncate">{contact.profession}</td>
+                    <td className="px-6 truncate">
+                     <div className=" ">
+                   
+                     <p className="text-gray-400">Building :  <span className="text-green-600 font-bold">{contact.address.buildingNumber}</span></p>
+                     <p className="text-gray-400">Flat :  <span className="text-green-600 font-bold">{contact.address.flatNumber}</span></p>
+                     </div>
+                    </td>
+
                     <td className="p-2 truncate">
                       <a
                         href={`https://wa.me/${contact.whatsapp.replace(
@@ -215,8 +236,19 @@ const Member = ({ state }: { state: any }) => {
                         {contact.whatsapp}
                       </a>
                     </td>
+                    <td className="px-4">
+                      {contact?.status === "inactive" ? (
+                        <>
+                          <p className="text-red-600 ">{contact?.status}</p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-blue-600 ">{contact?.status}</p>
+                        </>
+                      )}
+                    </td>
                     {user && (
-                      <td className="p-2 flex justify-center items-center gap-2">
+                      <td className="p-2 flex justify-center items-center gap-2 mt-2">
                         <button
                           onClick={() => handleUpdate(contact)}
                           className="text-blue-600"
@@ -249,11 +281,19 @@ const Member = ({ state }: { state: any }) => {
             <h3 className="text-lg font-bold mb-4">Update User Information</h3>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="relative">
-              <img
-  src={typeof preview === "string" ? preview : imgProfile ? (typeof imgProfile === "string" ? imgProfile : undefined) : "default_image_url_here"}
-  alt="Profile"
-  className="h-[400px] mx-auto w-full mb-12 object-cover"
-/>
+                <img
+                  src={
+                    typeof preview === "string"
+                      ? preview
+                      : imgProfile
+                      ? typeof imgProfile === "string"
+                        ? imgProfile
+                        : undefined
+                      : "default_image_url_here"
+                  }
+                  alt="Profile"
+                  className="h-[400px] mx-auto w-full mb-12 object-cover"
+                />
                 <label
                   htmlFor="file-upload"
                   className="absolute bottom-0 right-0 p-4"
@@ -288,27 +328,51 @@ const Member = ({ state }: { state: any }) => {
                 )}
               </div>
 
-              <div className="mb-4">
-                <label
-                  htmlFor="profession"
-                  className="block text-gray-700 font-bold mb-2"
-                >
+              <div className="mb-6 w-full">
+                <label htmlFor="profession" className="block mb-2 ml-1">
                   Profession:
                 </label>
-                <input
-                  id="profession"
+                <select
+                  className="border w-full px-3 py-2 rounded-lg text-black bg-white"
                   {...register("profession", {
                     required: "Profession is required",
                   })}
-                  className="w-full border border-gray-300 p-2 rounded-lg"
-                />
+                >
+                  <option value="">Select Profession</option>
+                  <option value="Student">Student</option>
+                  <option value="Doctor">Doctor</option>
+                  <option value="Engineer">Engineer</option>
+                  <option value="Banker">Banker</option>
+                  <option value="Businessman">Businessman</option>
+                  <option value="Others">Others..</option>
+                </select>
                 {errors.profession && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <span className="mt-1 text-red-600 block">
                     {errors.profession.message}
-                  </p>
+                  </span>
                 )}
               </div>
 
+              <div className="mb-6 w-full">
+                <label htmlFor="profession" className="block mb-2 ml-1">
+                  Status:
+                </label>
+                <select
+                  className="border w-full px-3 py-2 rounded-lg text-black bg-white"
+                  {...register("status", {
+                    required: "Profession is required",
+                  })}
+                >
+                  <option value="">Select Status</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+                {errors.status && (
+                  <span className="mt-1 text-red-600 block">
+                    {errors.status.message}
+                  </span>
+                )}
+              </div>
               <div className="mb-4">
                 <label
                   htmlFor="whatsapp"
@@ -329,28 +393,6 @@ const Member = ({ state }: { state: any }) => {
                   </p>
                 )}
               </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="status"
-                  className="block text-gray-700 font-bold mb-2"
-                >
-                  Status:
-                </label>
-                <input
-                  id="status"
-                  {...register("status", {
-                    required: "Status is required",
-                  })}
-                  className="w-full border border-gray-300 p-2 rounded-lg"
-                />
-                {errors.status && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.status.message}
-                  </p>
-                )}
-              </div>
-
               <div className="flex justify-end gap-2">
                 <button
                   type="button"

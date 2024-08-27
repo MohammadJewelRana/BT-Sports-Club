@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <div>
+    <div className="mb-6">
       <footer className="border-t-4 mt-12  footer footer-center bg-base-200 text-base-content rounded p-10">
         <nav className="grid grid-flow-col gap-4">
           <Link to='/' className="link link-hover"> Home  </Link>

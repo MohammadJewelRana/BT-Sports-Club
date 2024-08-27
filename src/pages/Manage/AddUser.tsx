@@ -58,6 +58,7 @@ const AddUser = () => {
               profileImg: imgURL,
             };
 
+            // fetch("http://localhost:5000/api/user/create-user", {
             fetch("https://bt-sports-backend.vercel.app/api/user/create-user", {
               method: "POST",
               headers: {

@@ -1,7 +1,9 @@
+ 
 import { Link } from "react-router-dom"
 
 
 const QuickLinks = () => {
+ 
   return (
     <div>
       
@@ -45,6 +47,8 @@ const QuickLinks = () => {
               >
                   Gallery  
               </Link>
+
+ 
             </div>
           </div>
 

@@ -1,12 +1,9 @@
- 
-
-
 import { Layout } from "antd";
 import Sidebar from "./Sidebar";
 import { Outlet } from "react-router-dom";
 import { Content, Header } from "antd/es/layout/layout";
 import Footer from "../pages/Shared/Footer";
-import logo from '../assets/logo/images.png';
+import logo from "../assets/logo/images.png";
 import BottomNav from "../pages/Shared/BottomNav";
 
 const MainLayout = () => {
@@ -38,4 +35,3 @@ const MainLayout = () => {
 };
 
 export default MainLayout;
-

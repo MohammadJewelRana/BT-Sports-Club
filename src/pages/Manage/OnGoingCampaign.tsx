@@ -337,11 +337,11 @@ const OnGoingCampaign = ({ onGoingData, campaignRefetch }: any) => {
                           <td className="py-2 px-4">{data?.paidAmount}</td>
                           <td className="py-2 px-4">
                             {data?.paymentStatus === "paid" ? (
-                              <span className="text-green-600 font-bold">
+                              <span className="text-green-600 ">
                                 Completed
                               </span>
                             ) : (
-                              <span className="text-red-600 font-bold">
+                              <span className="text-red-600 ">
                                 Pending
                               </span>
                             )}
@@ -447,6 +447,8 @@ const OnGoingCampaign = ({ onGoingData, campaignRefetch }: any) => {
           </form>
         </div>
       </div>
+
+      
     </div>
   );
 };
