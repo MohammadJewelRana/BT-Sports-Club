@@ -73,7 +73,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/ballLost",
-        element: <BallLost></BallLost>,
+        element: <BallLost status={null}></BallLost>,
       },
 
       // {

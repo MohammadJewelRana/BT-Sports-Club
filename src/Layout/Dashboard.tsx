@@ -124,7 +124,7 @@ const Dashboard = () => {
         <Campaign></Campaign>
       </div>
       <div className="mt-24">
-        <BallLost></BallLost>
+        <BallLost status={'home'}></BallLost>
       </div>
       <div className="mt-24">
         <Member state={null}></Member>

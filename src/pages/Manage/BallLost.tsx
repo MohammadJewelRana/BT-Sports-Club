@@ -27,7 +27,7 @@ interface ModalData {
   returnDetails: ReturnDetail[];
 }
 
-const BallLost = () => {
+const BallLost = ({ status }: { status: any }) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showEyeModal, setShowEyeModal] = useState<boolean>(false);
   const [modalData, setModalData] = useState<ModalData>({
@@ -67,6 +67,8 @@ const BallLost = () => {
       returnDate: date,
       returnedBallCount: Number(returnedBall),
     };
+    console.log(newData);
+    
 
     try {
       const response = await fetch(
@@ -168,7 +170,7 @@ const BallLost = () => {
       {user && <AddBallLost refetch={refetch} />}
 
       <HeadingWithSubheading
-        heading={"Ball Lost List"}
+        heading={"Ball Loss Records"}
         subheading={"Details of who lost the ball"}
       />
 
@@ -192,6 +194,7 @@ const BallLost = () => {
                     <td className="py-2 px-4">{lost.totalLost}</td>
                     <td className="py-2 px-4">{lost.totalGiven}</td>
                     <td className="py-2 px-4">{lost.remaining}</td>
+
                     <td className="py-2 px-4 flex justify-center space-x-2">
                       <button
                         className="text-blue-500 hover:text-blue-700"
@@ -200,22 +203,28 @@ const BallLost = () => {
                       >
                         <FontAwesomeIcon icon={faEye} />
                       </button>
+
                       {user && (
                         <>
-                          <button
-                            className="text-green-500 hover:text-green-700"
-                            title="Return"
-                            onClick={() => handleReturn(lost._id)}
-                          >
-                            <FontAwesomeIcon icon={faUndoAlt} />
-                          </button>
-                          <button
-                            className="text-red-500 hover:text-red-700"
-                            title="Delete"
-                            onClick={() => handleDelete(lost._id)}
-                          >
-                            <FontAwesomeIcon icon={faTrash} />
-                          </button>
+                          {status !== "home" && (
+                            <>
+                              {" "}
+                              <button
+                                className="text-green-500 hover:text-green-700"
+                                title="Return"
+                                onClick={() => handleReturn(lost._id)}
+                              >
+                                <FontAwesomeIcon icon={faUndoAlt} />
+                              </button>
+                              <button
+                                className="text-red-500 hover:text-red-700"
+                                title="Delete"
+                                onClick={() => handleDelete(lost._id)}
+                              >
+                                <FontAwesomeIcon icon={faTrash} />
+                              </button>{" "}
+                            </>
+                          )}
                         </>
                       )}
                     </td>

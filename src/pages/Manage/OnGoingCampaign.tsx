@@ -363,6 +363,7 @@ const OnGoingCampaign = ({ onGoingData, campaignRefetch }: any) => {
                                 </button>
                               ) : (
                                 <button
+                                  // htmlFor="my_modal_6"
                                   onClick={() =>
                                     handleUpdate(
                                       data?.id,
@@ -372,15 +373,11 @@ const OnGoingCampaign = ({ onGoingData, campaignRefetch }: any) => {
                                   }
                                   className="bg-green-600 py-1 px-4 rounded-md text-white cursor-pointer"
                                 >
-                                  <label
-                                    htmlFor="my_modal_6"
-                                    className="cursor-pointer"
-                                  >
-                                    Pay
-                                  </label>
+                              
+                                  pay
                                 </button>
                               )}
-                            </td>
+                           </td>
                           )}
                         </tr>
                       ))}

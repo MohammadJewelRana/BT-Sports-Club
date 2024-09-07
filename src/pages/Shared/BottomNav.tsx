@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { HomeOutlined, FlagOutlined, DollarOutlined, PictureOutlined, TeamOutlined, MoreOutlined, NotificationOutlined, FileTextOutlined } from '@ant-design/icons';
+import { FaArtstation } from "react-icons/fa";
  
 
 const BottomNav = () => {
@@ -63,6 +64,11 @@ const BottomNav = () => {
               </Link>
               <Link to="/rules" className={getDropdownItemClass("/rules")}>
                 <FileTextOutlined className="text-base mr-2 text-white" />
+               
+              </Link>
+              <Link to="/ballLost" className={getDropdownItemClass("/ballLost")}>
+                {/* <FileTextOutlined className="text-base mr-2 text-white" /> */}
+                <FaArtstation className="text-base mr-2 text-white" />
                
               </Link>
             </div>
